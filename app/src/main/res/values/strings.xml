@@ -1,0 +1,8 @@
+<resources>
+    <string name="app_name">Pokemon</string>
+    <string name="pokemon">Pokemon</string>
+    <string name="no_internet">NO INTERNET</string>
+    <string name="connection">CONNECTION</string>
+    <string name="splash_background">Splash background</string>
+    <string name="splash_screen">Splash Screen</string>
+</resources>

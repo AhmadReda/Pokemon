@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimary">#6200EE</color>
+    <color name="colorPrimaryDark">#2B2B2B</color>
+    <color name="colorAccent">#03DAC5</color>
+    <color name="red">#ED1C24</color>
+    <color name="white">#FFFFFF</color>
+    <color name="black">#000000</color>
+    <color name="background">#FCFCFC</color>
+    <color name="background2">#FFFFFF</color>
+    <!-- Shimmer Colors  -->
+    <color name="shimmer">#E7E7E7</color>
+    <color name="darkShimmer">#F5CFCFCF</color>
+    <color name="highlightShimmer">#F3F3F3</color>
+    <!-- Bottom Nav Colors  -->
+    <color name="bottom_nav">#00665C</color>
+    <color name="bottom_nav_active_txt">#F3FFAB</color>
+    <color name="bottom_nav_inactive_txt">#FCFCFC</color>
+    <!-- Splash Screen  -->
+    <color name="splash_background1">#3DDC84</color>
+    <color name="splash_background2">#96e6a1</color>
+
+</resources>

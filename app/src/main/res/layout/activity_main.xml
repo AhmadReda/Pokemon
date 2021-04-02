@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/root_layout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/background"
+    tools:context=".ui.MainActivity">
+
+    <!-- 3 Main Fragments [Slider,Pokemon,Fav]-->
+    <androidx.fragment.app.FragmentContainerView
+        android:id="@+id/slider_fragment"
+        android:layout_width="match_parent"
+        android:layout_height="250dp"
+        class="com.example.android.pokemon.ui.SliderFragment"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+    <androidx.fragment.app.FragmentContainerView
+        android:id="@+id/fav_fragment"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:visibility="gone"
+        class="com.example.android.pokemon.ui.FavFragment"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/slider_fragment"/>
+    <androidx.fragment.app.FragmentContainerView
+        android:id="@+id/pokemon_fragment"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:visibility="gone"
+        class="com.example.android.pokemon.ui.PokemonFragment"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/slider_fragment"/>
+
+
+        <com.google.android.material.bottomnavigation.BottomNavigationView
+            android:id="@+id/bottom_nav"
+            android:layout_width="match_parent"
+            android:layout_height="70dp"
+            android:background="@drawable/bottom_nav_shape"
+            app:itemTextColor="@color/tab_item_txt"
+            android:visibility="gone"
+            app:hideOnScroll="true"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:menu="@menu/bottom_nav_menu">
+            <com.google.android.material.floatingactionbutton.FloatingActionButton
+                android:id="@+id/fab_up"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:visibility="gone"
+                android:layout_gravity="center"
+                android:onClick="goUP"
+                android:src="@drawable/ic_arrow_up" />
+        </com.google.android.material.bottomnavigation.BottomNavigationView>
+
+    <!-- Internet Connection Message -->
+
+
+    <include
+        android:id="@+id/iv_internet"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:visibility="gone"
+        layout="@layout/internet_connection" />
+
+    <!-- Splash Screen Components -->
+    <ImageView
+        android:id="@+id/splash_background"
+        android:layout_width="match_parent"
+        android:layout_height="900dp"
+        android:background="@drawable/background"
+        android:scaleType="centerCrop"
+        android:contentDescription="@string/splash_screen"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.0" />
+
+    <com.airbnb.lottie.LottieAnimationView
+        android:id="@+id/lottieAnimationView"
+        android:layout_width="150dp"
+        android:layout_height="150dp"
+        app:lottie_autoPlay="true"
+        app:lottie_rawRes="@raw/splashpokemon"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.497"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.421" />
+    <TextView
+        android:id="@+id/splash_txt"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/lottieAnimationView"
+        app:layout_constraintVertical_bias="0"
+        android:text="@string/pokemon"
+        android:textSize="@dimen/_20sdp"
+        android:textStyle="bold"
+        android:textColor="@color/bottom_nav_active_txt"/>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

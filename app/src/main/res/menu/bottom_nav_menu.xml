@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <item
+    android:id="@+id/btn_pokemon"
+    android:icon="@drawable/pokemon_state_icon"
+    android:title="Pokemons"/>
+    <item
+        android:id="@+id/holder"
+        android:icon="@drawable/pokemon_state_icon"
+        android:title=""
+        android:enabled="false"/>
+    <item
+        android:id="@+id/btn_fav"
+        android:icon="@drawable/fav_state_icon"
+        android:title="Favourite" />
+</menu>

@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/background">
+
+    <ImageView
+        android:id="@+id/iv_ic_header"
+        android:layout_width="match_parent"
+        android:layout_height="150dp"
+        android:src="@drawable/header"
+        android:scaleType="centerCrop"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <com.airbnb.lottie.LottieAnimationView
+        android:id="@+id/lottieAnimationView2"
+        android:layout_width="200dp"
+        android:layout_height="200dp"
+        app:lottie_repeatMode="restart"
+        app:lottie_repeatCount="10"
+        app:lottie_autoPlay="true"
+        app:lottie_rawRes="@raw/wifi"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/iv_ic_header"
+ />
+
+    <TextView
+        android:id="@+id/tv_ic_1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/no_internet"
+        android:textStyle="bold"
+        android:textSize="30sp"
+        android:textColor="#009082"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/lottieAnimationView2"/>
+    <TextView
+        android:id="@+id/tv_ic_2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/connection"
+        android:textStyle="bold"
+        android:textSize="30sp"
+        android:textColor="#363636"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tv_ic_1"/>
+</androidx.constraintlayout.widget.ConstraintLayout>

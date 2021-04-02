@@ -56,7 +56,9 @@ public class MainActivity extends AppCompatActivity {
     private FragmentContainerView fvFav;
     // Views
 
-
+    private ConstraintLayout rootLayout;
+    private static BottomNavigationView navigationView;
+    private FloatingActionButton favUp;
     ///Comment for Pull Request
 
     @Override

@@ -25,13 +25,8 @@ public class PokemonAdapter extends RecyclerView.Adapter<PokemonAdapter.PokemonV
     private Context context;
     private static PokemonAdapter instance;
 
-    private PokemonAdapter(Context context) {
+    public PokemonAdapter(Context context) {
         this.context = context;
-    }
-
-    public static PokemonAdapter getInstance(Context context) {
-        instance = new PokemonAdapter(context);
-        return instance;
     }
 
     @NonNull

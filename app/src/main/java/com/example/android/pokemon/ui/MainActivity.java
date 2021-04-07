@@ -16,14 +16,19 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.constraintlayout.widget.ConstraintLayout;
-import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentContainerView;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.Observer;
+import androidx.navigation.NavController;
+import androidx.navigation.NavDestination;
+import androidx.navigation.Navigation;
+import androidx.navigation.fragment.NavHostFragment;
+import androidx.navigation.ui.NavigationUI;
 
 import com.airbnb.lottie.LottieAnimationView;
 import com.example.android.pokemon.R;
@@ -52,14 +57,16 @@ public class MainActivity extends AppCompatActivity {
     private FavFragment favFragment;
     private FragmentManager fragmentManager;
     private FragmentContainerView fvSlider;
-    private FragmentContainerView fvPokemon;
-    private FragmentContainerView fvFav;
+    private NavController navController;
+    private NavHostFragment navHostFragment;
+    private View fragment;
+
     // Views
 
     private ConstraintLayout rootLayout;
     private static BottomNavigationView navigationView;
     private FloatingActionButton favUp;
-    ///Comment for Pull Request
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -73,32 +80,47 @@ public class MainActivity extends AppCompatActivity {
 
         initViews();
 
+        // Setup Navigation Component
+        FragmentManager supportFragmentManager = getSupportFragmentManager();
+        navHostFragment = (NavHostFragment) supportFragmentManager.findFragmentById(R.id.nav_host_fragment);
+        navController = navHostFragment.getNavController();
+        navController.getPreviousBackStackEntry();
+        NavigationUI.setupWithNavController(navigationView,navController);
+        navController.addOnDestinationChangedListener(new NavController.OnDestinationChangedListener() {
+            @Override
+            public void onDestinationChanged(@NonNull NavController controller, @NonNull NavDestination destination, @Nullable Bundle arguments) {
+                switch (destination.getId()){
+                    case R.id.pokemonFragment:
+                        if(mainOffline){
+                            vInternet.setVisibility(View.VISIBLE);
+                            fragment.setVisibility(View.GONE);
+                        }
+                        break;
+                    case R.id.favFragment:
+                        if(mainOffline){
+                            fragment.setVisibility(View.VISIBLE);
+                            vInternet.setVisibility(View.GONE);
+                        }
+                        break;
+                }
+            }
+        });
+
         handler = new Handler();
         handler.postDelayed(runnable,5400);
 
         setupAnim();
 
-        pokemonFragment = PokemonFragment.getInstance();
-        favFragment = FavFragment.getInstance();
-//        fragmentManager = getSupportFragmentManager();
-
         navigationView.setItemIconTintList(null);
-        navigationView.setOnNavigationItemSelectedListener(navListner);
 
-//        SliderFragment sliderFragment = new SliderFragment();
-//        fragmentManager.beginTransaction()
-//                .add(R.id.fragment_frame_slider,sliderFragment)
-//                .commit();
+
         if(isNetworkAvailable()){
             vInternet.setVisibility(View.GONE);
             mainOffline = false;
-            fvPokemon.setVisibility(View.VISIBLE);
-//            fragmentManager.beginTransaction()
-////                    .add(R.id.fragment_frame,pokemonFragment)
-////                    .commit();
         }else {
             mainOffline = true;
             vInternet.setVisibility(View.VISIBLE);
+            fragment.setVisibility(View.GONE);
         }
         // Observer Network State
         registerNetwork();
@@ -107,12 +129,9 @@ public class MainActivity extends AppCompatActivity {
             public void onChanged(Boolean aBoolean) {
                 if(aBoolean && mainOffline){
                     vInternet.setVisibility(View.GONE);
-                    frameLayout.setVisibility(View.VISIBLE);
+                    fragment.setVisibility(View.VISIBLE);
+                    //NavigationUI.setupWithNavController(navigationView,navController);
                     mainOffline = false;
-//                    Fragment fragment = PokemonFragment.getInstance();
-//                    fragmentManager.beginTransaction()
-//                            .replace(R.id.fragment_frame,fragment)
-//                            .commit();
                     Snackbar.make( rootLayout,"You are online !", Snackbar.LENGTH_LONG)
                             .setAction("Close", new View.OnClickListener() {
                                 @Override
@@ -122,6 +141,8 @@ public class MainActivity extends AppCompatActivity {
                             .setAnchorView(R.id.bottom_nav)
                             .setActionTextColor(getResources().getColor(R.color.colorAccent))
                             .show();
+                    navController.popBackStack();
+                    navController.navigate(R.id.pokemonFragment);
                 }else if(!aBoolean && !mainOffline){
                     Snackbar.make( rootLayout,"You are offline !", Snackbar.LENGTH_LONG)
                             .setAction("Close", new View.OnClickListener() {
@@ -132,61 +153,21 @@ public class MainActivity extends AppCompatActivity {
                             .setAnchorView(R.id.bottom_nav)
                             .setActionTextColor(getResources().getColor(R.color.red))
                             .show();
+                }else if(aBoolean && !mainOffline){
+                    Snackbar.make( rootLayout,"You are online !", Snackbar.LENGTH_LONG)
+                            .setAction("Close", new View.OnClickListener() {
+                                @Override
+                                public void onClick(View view) {
+                                }
+                            })
+                            .setAnchorView(R.id.bottom_nav)
+                            .setActionTextColor(getResources().getColor(R.color.colorAccent))
+                            .show();
                 }
             }
         });
+
     }
-    private BottomNavigationView.OnNavigationItemSelectedListener navListner = new
-            BottomNavigationView.OnNavigationItemSelectedListener() {
-                @Override
-                public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-                    Fragment selectedFrag = null;
-                    switch (item.getItemId()){
-                        case R.id.btn_pokemon:
-                            if(isNetworkAvailable()){
-                                vInternet.setVisibility(View.GONE);
-                                mainOffline = false;
-//                                selectedFrag = pokemonFragment;
-                                fvPokemon.setVisibility(View.VISIBLE);
-                                fvFav.setVisibility(View.GONE);
-                                setAnimForFragment();
-                            }
-                            else if(mainOffline){
-                                vInternet.setVisibility(View.VISIBLE);
-                                return true;
-                            }else {
-                                vInternet.setVisibility(View.GONE);
-
-                                mainOffline = false;
-                                //selectedFrag = pokemonFragment;
-                                //frameLayout.setVisibility(View.VISIBLE);
-                                fvPokemon.setVisibility(View.VISIBLE);
-                                fvFav.setVisibility(View.GONE);
-                                setAnimForFragment();
-                            }
-                        break;
-                        case R.id.btn_fav:
-                            if(mainOffline){
-                                vInternet.setVisibility(View.GONE);
-                                //fragContainer.setVisibility(View.GONE);
-                                fvPokemon.setVisibility(View.GONE);
-                                fvFav.setVisibility(View.VISIBLE);
-                                setAnimForFragment();
-                            }
-                            fvPokemon.setVisibility(View.GONE);
-                            fvFav.setVisibility(View.VISIBLE);
-                            setAnimForFragment();
-                            //selectedFrag = favFragment;
-
-                        break;
-                    }
-//                    fragmentManager.beginTransaction()
-//                            .add(R.id.fragment_frame,favFragment)
-//                            .commit();
-                    return true;
-                }
-            };
-
     private Runnable runnable = new Runnable() {
         @Override
         public void run() {
@@ -207,17 +188,17 @@ public class MainActivity extends AppCompatActivity {
         lottieAnimationView = findViewById(R.id.lottieAnimationView);
         tvSplash = findViewById(R.id.splash_txt);
         vInternet = findViewById(R.id.iv_internet);
-        fvPokemon = findViewById(R.id.pokemon_fragment);
-        fvFav = findViewById(R.id.fav_fragment);
         fvSlider = findViewById(R.id.slider_fragment);
         favUp = findViewById(R.id.fab_up);
+        fragment = findViewById(R.id.nav_host_fragment);
+
     }
     private void setupAnim(){
         ivSplash.animate().translationY(-2000).setDuration(1000).setStartDelay(4000);
         lottieAnimationView.animate().translationY(1400).setDuration(1000).setStartDelay(4000);
         tvSplash.animate().translationY(1400).setDuration(1000).setStartDelay(4000);
     }
-    private boolean isNetworkAvailable(){
+    public boolean isNetworkAvailable(){
         try{
             ConnectivityManager manager = (ConnectivityManager)
                     getSystemService(Context.CONNECTIVITY_SERVICE);

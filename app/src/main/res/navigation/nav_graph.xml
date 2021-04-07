@@ -1,5 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <navigation xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto" android:id="@+id/nav_graph">
+    xmlns:app="http://schemas.android.com/apk/res-auto" android:id="@+id/nav_graph"
+    app:startDestination="@id/pokemonFragment">
 
+    <fragment
+        android:id="@+id/pokemonFragment"
+        android:name="com.example.android.pokemon.ui.PokemonFragment"
+        android:label="PokemonFragment" />
+    <fragment
+        android:id="@+id/favFragment"
+        android:name="com.example.android.pokemon.ui.FavFragment"
+        android:label="FavFragment" />
 </navigation>

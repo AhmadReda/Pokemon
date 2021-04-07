@@ -8,7 +8,15 @@
     android:layout_height="match_parent"
     android:background="@color/background"
     tools:context=".ui.MainActivity">
+    <!-- Internet Connection Message -->
 
+
+    <include
+        android:id="@+id/iv_internet"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:visibility="gone"
+        layout="@layout/internet_connection" />
     <!-- 3 Main Fragments [Slider,Pokemon,Fav]-->
     <androidx.fragment.app.FragmentContainerView
         android:id="@+id/slider_fragment"
@@ -17,30 +25,20 @@
         class="com.example.android.pokemon.ui.SliderFragment"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-    <androidx.fragment.app.FragmentContainerView
-        android:id="@+id/fav_fragment"
+        app:layout_constraintTop_toTopOf="parent" >
+    </androidx.fragment.app.FragmentContainerView>
+    <fragment
+        android:id="@+id/nav_host_fragment"
+        android:name="androidx.navigation.fragment.NavHostFragment"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:visibility="gone"
-        class="com.example.android.pokemon.ui.FavFragment"
+        app:defaultNavHost="true"
+        app:navGraph="@navigation/nav_graph"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/slider_fragment"/>
-    <androidx.fragment.app.FragmentContainerView
-        android:id="@+id/pokemon_fragment"
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:visibility="gone"
-        class="com.example.android.pokemon.ui.PokemonFragment"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/slider_fragment"/>
-
-
-        <com.google.android.material.bottomnavigation.BottomNavigationView
+    <com.google.android.material.bottomnavigation.BottomNavigationView
             android:id="@+id/bottom_nav"
             android:layout_width="match_parent"
             android:layout_height="70dp"
@@ -62,15 +60,7 @@
                 android:src="@drawable/ic_arrow_up" />
         </com.google.android.material.bottomnavigation.BottomNavigationView>
 
-    <!-- Internet Connection Message -->
 
-
-    <include
-        android:id="@+id/iv_internet"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:visibility="gone"
-        layout="@layout/internet_connection" />
 
     <!-- Splash Screen Components -->
     <ImageView

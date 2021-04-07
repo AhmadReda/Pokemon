@@ -6,28 +6,20 @@
     android:layout_height="match_parent"
     android:background="@color/background">
 
-    <ImageView
-        android:id="@+id/iv_ic_header"
-        android:layout_width="match_parent"
-        android:layout_height="150dp"
-        android:src="@drawable/header"
-        android:scaleType="centerCrop"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
 
     <com.airbnb.lottie.LottieAnimationView
         android:id="@+id/lottieAnimationView2"
-        android:layout_width="200dp"
-        android:layout_height="200dp"
-        app:lottie_repeatMode="restart"
-        app:lottie_repeatCount="10"
-        app:lottie_autoPlay="true"
-        app:lottie_rawRes="@raw/wifi"
+        android:layout_width="150dp"
+        android:layout_height="150dp"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/iv_ic_header"
- />
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.612"
+        app:lottie_autoPlay="true"
+        app:lottie_rawRes="@raw/wifi"
+        app:lottie_repeatCount="10"
+        app:lottie_repeatMode="restart" />
 
     <TextView
         android:id="@+id/tv_ic_1"
@@ -35,7 +27,7 @@
         android:layout_height="wrap_content"
         android:text="@string/no_internet"
         android:textStyle="bold"
-        android:textSize="30sp"
+        android:textSize="20sp"
         android:textColor="#009082"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -46,7 +38,7 @@
         android:layout_height="wrap_content"
         android:text="@string/connection"
         android:textStyle="bold"
-        android:textSize="30sp"
+        android:textSize="20sp"
         android:textColor="#363636"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"

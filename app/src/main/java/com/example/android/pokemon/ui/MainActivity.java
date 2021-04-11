@@ -8,7 +8,7 @@ import android.net.NetworkInfo;
 import android.net.NetworkRequest;
 import android.os.Bundle;
 import android.os.Handler;
-import android.view.MenuItem;
+import android.util.Log;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.FrameLayout;
@@ -26,7 +26,6 @@ import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.Observer;
 import androidx.navigation.NavController;
 import androidx.navigation.NavDestination;
-import androidx.navigation.Navigation;
 import androidx.navigation.fragment.NavHostFragment;
 import androidx.navigation.ui.NavigationUI;
 
@@ -257,8 +256,14 @@ public class MainActivity extends AppCompatActivity {
     }
     public void goUP(View view) {
         //scrollTo(0,0)
-        pokemonFragment.scrollView.fullScroll(View.FOCUS_UP);
-        favFragment.scrollView.fullScroll(View.FOCUS_UP);
+        try{
+            pokemonFragment.scrollViewPokemon.fullScroll(View.FOCUS_UP);
+            favFragment.fvScrollView.fullScroll(View.FOCUS_UP);
+        }
+        catch (NullPointerException e){
+            Log.d("Main", "goUP: "+e);
+        }
+
     }
     private void setAnimForFragment(){
         fragmentManager = getSupportFragmentManager();

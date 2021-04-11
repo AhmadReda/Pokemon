@@ -27,28 +27,24 @@ import java.util.List;
 import it.xabaras.android.recyclerview.swipedecorator.RecyclerViewSwipeDecorator;
 
 public class FavFragment extends Fragment {
-    private PokemonViewModel pokemonViewModel;
-    private RecyclerView recyclerView;
-    private FavAdapter pokemonAdapter;
-    public static NestedScrollView scrollView;
+    private PokemonViewModel fvPokemonViewModel;
+    private RecyclerView fvRecyclerView;
+    private FavAdapter favPokemonAdapter;
+    public static NestedScrollView fvScrollView;
 
-    private static FavFragment instance = new FavFragment();
     public FavFragment() {
-    }
-
-    public static FavFragment getInstance() {
-        return instance;
     }
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_pokemon_fav,container,false);
-        recyclerView = rootView.findViewById(R.id.rv_pokemonList);
+        fvRecyclerView = rootView.findViewById(R.id.rv_fvpokemonList);
 
-        pokemonAdapter =  FavAdapter.getInstance(getActivity());
-        recyclerView.setAdapter(pokemonAdapter);
-        scrollView = rootView.findViewById(R.id.nested_scroll_view);
+//        favPokemonAdapter =  FavAdapter.getInstance(getActivity());
+        favPokemonAdapter =  new FavAdapter(getActivity());
+        fvRecyclerView.setAdapter(favPokemonAdapter);
+        fvScrollView = rootView.findViewById(R.id.nested_scroll_view);
         setupSwipe();
         return rootView;
     }
@@ -56,18 +52,18 @@ public class FavFragment extends Fragment {
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        pokemonViewModel = new ViewModelProvider(getActivity()).get(PokemonViewModel.class);
-        pokemonViewModel.getFavPokemons();
-        pokemonViewModel.getFavPokemonList().observe(getActivity(), new Observer<List<Pokemon>>() {
+        fvPokemonViewModel = new ViewModelProvider(getActivity()).get(PokemonViewModel.class);
+        fvPokemonViewModel.getFavPokemons();
+        fvPokemonViewModel.getFavPokemonList().observe(getActivity(), new Observer<List<Pokemon>>() {
             @Override
             public void onChanged(List<Pokemon> pokemons) {
-                pokemonAdapter.setDataSet(pokemons);
-                pokemonAdapter.notifyDataSetChanged();
+                favPokemonAdapter.setDataSet(pokemons);
+                favPokemonAdapter.notifyDataSetChanged();
             }
         });
 
         // hit the api with every 10 pokemons are displayed
-        scrollView.setOnScrollChangeListener(new NestedScrollView.OnScrollChangeListener() {
+        fvScrollView.setOnScrollChangeListener(new NestedScrollView.OnScrollChangeListener() {
             boolean protect = true;
             @Override
             public void onScrollChange(NestedScrollView v, int scrollX, int scrollY, int oldScrollX, int oldScrollY) {
@@ -101,16 +97,16 @@ public class FavFragment extends Fragment {
             @Override
             public void onSwiped(@NonNull RecyclerView.ViewHolder viewHolder, int direction) {
                 int swipedPokemonPos = viewHolder.getAdapterPosition();
-                Pokemon pokemon = pokemonAdapter.getPokemonAt(swipedPokemonPos);
-                pokemonViewModel.deletePokemon(pokemon.getId());
-                pokemonAdapter.notifyDataSetChanged();
+                Pokemon pokemon = favPokemonAdapter.getPokemonAt(swipedPokemonPos);
+                fvPokemonViewModel.deletePokemon(pokemon.getId());
+                favPokemonAdapter.notifyDataSetChanged();
 
-                Snackbar.make(recyclerView,"pokemon deleted from database",Snackbar.LENGTH_LONG)
+                Snackbar.make(fvRecyclerView,"pokemon deleted from database",Snackbar.LENGTH_LONG)
                         .setAction("Undo", new View.OnClickListener() {
                             @Override
                             public void onClick(View view) {
-                                pokemonViewModel.insertPokemon(pokemon);
-                                pokemonAdapter.notifyDataSetChanged();
+                                fvPokemonViewModel.insertPokemon(pokemon);
+                                favPokemonAdapter.notifyDataSetChanged();
                             }
                         })
                         .setAnchorView(R.id.bottom_nav)
@@ -130,6 +126,6 @@ public class FavFragment extends Fragment {
             }
         };
         ItemTouchHelper touchHelper = new ItemTouchHelper(callback);
-        touchHelper.attachToRecyclerView(recyclerView);
+        touchHelper.attachToRecyclerView(fvRecyclerView);
     }
 }

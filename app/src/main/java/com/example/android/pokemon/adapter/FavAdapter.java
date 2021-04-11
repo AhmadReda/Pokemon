@@ -23,7 +23,7 @@ public class FavAdapter extends RecyclerView.Adapter<FavAdapter.FavViewHolder> {
     List<Pokemon> dataSet = new ArrayList<Pokemon>();
     private Context context;
     private static FavAdapter instance;
-    private FavAdapter (Context context){
+    public FavAdapter (Context context){
         this.context = context;
     }
     public static FavAdapter getInstance(Context context){

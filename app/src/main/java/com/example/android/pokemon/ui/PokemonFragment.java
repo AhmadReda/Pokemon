@@ -38,7 +38,7 @@ public class PokemonFragment extends Fragment {
     private RecyclerView recyclerView;
     private PokemonAdapter pokemonAdapter;
     private ProgressBar progressBar;
-    public static NestedScrollView scrollView;
+    public static NestedScrollView scrollViewPokemon;
     private static final String TAG = "PokemonFragment";
     public ShimmerFrameLayout shimmerFrameLayout;
 
@@ -61,29 +61,37 @@ public class PokemonFragment extends Fragment {
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         // Start shimmer
-        shimmerFrameLayout.startShimmer();
+        //shimmerFrameLayout.startShimmer();
         Log.d(TAG, "TAG onActivityCreated: ");
         
         pokemonViewModel = new ViewModelProvider(getActivity()).get(PokemonViewModel.class);
         pokemonAdapter = new PokemonAdapter(getActivity());
         
         page = pokemonViewModel.getPage();
+        Log.d(TAG, "TAG onActivityCreated: Page Start Num "+page);
         GridLayoutManager gridLayoutManager = new GridLayoutManager(getActivity(),
                 2, GridLayoutManager.VERTICAL, false);
         recyclerView.setLayoutManager(gridLayoutManager);
         recyclerView.setAdapter(pokemonAdapter);
-        if(page >0){
-            pokemonViewModel.getPokemons(0, page);
-            Log.d(TAG, "inside new Call with page = "+page);
-        }
+//        if(page >0){
+//            pokemonViewModel.getPokemons(0, page);
+//            Log.d(TAG, "inside new Call with page = "+page);
+//        }
 
 
             pokemonViewModel.getPokemons(page, limit);
+            if(page ==0){
+                page+=10;
+                pokemonViewModel.setPage(page);
+            }
             pokemonViewModel.getPokemonList().observe(getActivity(), new Observer<ArrayList<Pokemon>>() {
                 @Override
                 public void onChanged(ArrayList<Pokemon> pokemons) {
-                    configShimmerVisibility();
+                    //configShimmerVisibility();
+                    Log.d(TAG, "TAG onChanged: After Progress Bar");
+
                     progressBar.setVisibility(View.GONE);
+                    Log.d(TAG, "TAG onChanged: Before Progress Bar");
                     pokemonAdapter.setDataSet(pokemons);
                     Log.d(TAG, "TAG onChanged: set Data inside on LiveData Changed");
                 }
@@ -92,7 +100,7 @@ public class PokemonFragment extends Fragment {
         setupSwipe();
 
         // hit the api with every 10 pokemons are displayed
-        scrollView.setOnScrollChangeListener(new NestedScrollView.OnScrollChangeListener() {
+        scrollViewPokemon.setOnScrollChangeListener(new NestedScrollView.OnScrollChangeListener() {
             boolean protect = true;
             @Override
             public void onScrollChange(NestedScrollView v, int scrollX, int scrollY, int oldScrollX, int oldScrollY) {
@@ -101,9 +109,10 @@ public class PokemonFragment extends Fragment {
                     // when reach last item position
                     // increase page size
                     page += 10;
-                    pokemonViewModel.setPage(page);
-                    progressBar.setVisibility(View.VISIBLE);
+
+                   // progressBar.setVisibility(View.VISIBLE);
                     pokemonViewModel.getPokemons(page, limit);
+                    pokemonViewModel.setPage(page);
                     Log.d(TAG, "TAG onScrollChange: inside Scroll"+" Page num"+pokemonViewModel.getPage());
 
                 }
@@ -211,7 +220,7 @@ public class PokemonFragment extends Fragment {
     private void initViews(View view) {
         recyclerView = view.findViewById(R.id.rv_pokemonList);
         progressBar = view.findViewById(R.id.progress_bar);
-        scrollView = view.findViewById(R.id.nested_scroll_view);
+        scrollViewPokemon = view.findViewById(R.id.nested_scroll_view_pokemon);
         shimmerFrameLayout = view.findViewById(R.id.shimmer_layout);
     }
     private void configShimmerVisibility() {

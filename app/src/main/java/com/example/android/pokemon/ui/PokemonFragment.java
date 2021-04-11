@@ -54,6 +54,7 @@ public class PokemonFragment extends Fragment {
         View rootView = inflater.inflate(R.layout.fragment_pokemon, container, false);
         initViews(rootView);
         Log.d(TAG, "TAG onCreateView: ");
+
         return rootView;
     }
 
@@ -80,6 +81,8 @@ public class PokemonFragment extends Fragment {
 
 
             pokemonViewModel.getPokemons(page, limit);
+
+
             if(page ==0){
                 page+=10;
                 pokemonViewModel.setPage(page);
@@ -96,7 +99,7 @@ public class PokemonFragment extends Fragment {
                     Log.d(TAG, "TAG onChanged: set Data inside on LiveData Changed");
                 }
             });
-        
+
         setupSwipe();
 
         // hit the api with every 10 pokemons are displayed
@@ -110,7 +113,7 @@ public class PokemonFragment extends Fragment {
                     // increase page size
                     page += 10;
 
-                   // progressBar.setVisibility(View.VISIBLE);
+                    progressBar.setVisibility(View.VISIBLE);
                     pokemonViewModel.getPokemons(page, limit);
                     pokemonViewModel.setPage(page);
                     Log.d(TAG, "TAG onScrollChange: inside Scroll"+" Page num"+pokemonViewModel.getPage());
@@ -123,6 +126,10 @@ public class PokemonFragment extends Fragment {
                     MainActivity.getNavigationView().animate().translationY(0);
                     protect = true;
                 }
+//                Log.d(TAG, "TAG onScrollChange: Y"+scrollY);
+//                Log.d(TAG, "TAG onScrollChange: X"+scrollX);
+//                if(scrollY !=0)
+//                    pokemonViewModel.setScrollY(scrollY);
             }
         });
      }
@@ -185,6 +192,7 @@ public class PokemonFragment extends Fragment {
     public void onResume() {
         super.onResume();
         Log.d(TAG, "TAG onResume: ");
+//        scrollViewPokemon.smoothScrollTo(0,pokemonViewModel.getScrollY());
     }
 
     @Override
@@ -197,6 +205,7 @@ public class PokemonFragment extends Fragment {
     public void onStart() {
         super.onStart();
         Log.d(TAG, "TAG onStart: ");
+
     }
 
     @Override

@@ -257,6 +257,7 @@ public class MainActivity extends AppCompatActivity {
     public void goUP(View view) {
         //scrollTo(0,0)
         try{
+
             pokemonFragment.scrollViewPokemon.fullScroll(View.FOCUS_UP);
             favFragment.fvScrollView.fullScroll(View.FOCUS_UP);
         }

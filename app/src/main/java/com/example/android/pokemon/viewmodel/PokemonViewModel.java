@@ -25,6 +25,7 @@ public class PokemonViewModel extends ViewModel {
     private SingleLiveEvent<ArrayList<Pokemon>> liveData = new SingleLiveEvent<>();
     private LiveData<List<Pokemon>> favList = null;
     private int page=0;
+    private int scrollY = 0;
 
     @ViewModelInject
     public PokemonViewModel(Repository repository) {
@@ -74,6 +75,12 @@ public class PokemonViewModel extends ViewModel {
     }
     public void setPage(int page) {
         this.page = page;
+    }
+    public int getScrollY() {
+        return scrollY;
+    }
+    public void setScrollY(int scrollY) {
+        this.scrollY = scrollY;
     }
 
 }

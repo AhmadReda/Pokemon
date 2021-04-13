@@ -22,7 +22,7 @@ import io.reactivex.rxjava3.schedulers.Schedulers;
 public class PokemonViewModel extends ViewModel {
 
     private Repository repository;
-    private SingleLiveEvent<ArrayList<Pokemon>> liveData = new SingleLiveEvent<>();
+    private MutableLiveData<ArrayList<Pokemon>> liveData = new MutableLiveData<>();
     private LiveData<List<Pokemon>> favList = null;
     private int page=0;
     private int scrollY = 0;
@@ -31,7 +31,7 @@ public class PokemonViewModel extends ViewModel {
     public PokemonViewModel(Repository repository) {
         this.repository = repository;
     }
-    public SingleLiveEvent<ArrayList<Pokemon>> getPokemonList(){
+    public MutableLiveData<ArrayList<Pokemon>> getPokemonList(){
         return liveData;
     }
     public void getPokemons(int page,int limit){

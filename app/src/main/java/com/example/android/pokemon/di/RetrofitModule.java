@@ -9,6 +9,8 @@ import dagger.Provides;
 import dagger.hilt.InstallIn;
 import dagger.hilt.android.components.ApplicationComponent;
 import hu.akarnokd.rxjava3.retrofit.RxJava3CallAdapterFactory;
+import okhttp3.OkHttpClient;
+import okhttp3.logging.HttpLoggingInterceptor;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
@@ -18,11 +20,16 @@ public class RetrofitModule {
     @Provides
     @Singleton
     public static PokemonApiService getPkemonApiService(){
+        HttpLoggingInterceptor logInterceptor = new HttpLoggingInterceptor();
+        logInterceptor.setLevel(HttpLoggingInterceptor.Level.BODY);
         return new Retrofit.Builder()
                 .baseUrl("https://pokeapi.co/api/v2/")
+                .client(new OkHttpClient.Builder()
+                        .addInterceptor(logInterceptor).build())
                 .addConverterFactory(GsonConverterFactory.create())
                 .addCallAdapterFactory(RxJava3CallAdapterFactory.create())
                 .build()
                 .create(PokemonApiService.class);
     }
+
 }

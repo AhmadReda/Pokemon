@@ -41,7 +41,18 @@ public class PokemonFragment extends Fragment {
     public static NestedScrollView scrollViewPokemon;
     private static final String TAG = "PokemonFragment";
     public ShimmerFrameLayout shimmerFrameLayout;
+    public Observer observer = new Observer<ArrayList<Pokemon>>() {
+        @Override
+        public void onChanged(ArrayList<Pokemon> pokemons) {
+            //configShimmerVisibility();
+            Log.d(TAG, "TAG onChanged: After Progress Bar");
 
+            progressBar.setVisibility(View.GONE);
+            Log.d(TAG, "TAG onChanged: Before Progress Bar");
+            pokemonAdapter.setDataSet(pokemons);
+            Log.d(TAG, "TAG onChanged: set Data inside on LiveData Changed");
+        }
+    };
     private int page = 0;
     private final int limit = 10;
 
@@ -61,77 +72,7 @@ public class PokemonFragment extends Fragment {
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        // Start shimmer
-        //shimmerFrameLayout.startShimmer();
-        Log.d(TAG, "TAG onActivityCreated: ");
-        
-        pokemonViewModel = new ViewModelProvider(getActivity()).get(PokemonViewModel.class);
-        pokemonAdapter = new PokemonAdapter(getActivity());
-        
-        page = pokemonViewModel.getPage();
-        Log.d(TAG, "TAG onActivityCreated: Page Start Num "+page);
-        GridLayoutManager gridLayoutManager = new GridLayoutManager(getActivity(),
-                2, GridLayoutManager.VERTICAL, false);
-        recyclerView.setLayoutManager(gridLayoutManager);
-        recyclerView.setAdapter(pokemonAdapter);
-//        if(page >0){
-//            pokemonViewModel.getPokemons(0, page);
-//            Log.d(TAG, "inside new Call with page = "+page);
-//        }
 
-
-            pokemonViewModel.getPokemons(page, limit);
-
-
-            if(page ==0){
-                page+=10;
-                pokemonViewModel.setPage(page);
-            }
-            pokemonViewModel.getPokemonList().observe(getActivity(), new Observer<ArrayList<Pokemon>>() {
-                @Override
-                public void onChanged(ArrayList<Pokemon> pokemons) {
-                    //configShimmerVisibility();
-                    Log.d(TAG, "TAG onChanged: After Progress Bar");
-
-                    progressBar.setVisibility(View.GONE);
-                    Log.d(TAG, "TAG onChanged: Before Progress Bar");
-                    pokemonAdapter.setDataSet(pokemons);
-                    Log.d(TAG, "TAG onChanged: set Data inside on LiveData Changed");
-                }
-            });
-
-        setupSwipe();
-
-        // hit the api with every 10 pokemons are displayed
-        scrollViewPokemon.setOnScrollChangeListener(new NestedScrollView.OnScrollChangeListener() {
-            boolean protect = true;
-            @Override
-            public void onScrollChange(NestedScrollView v, int scrollX, int scrollY, int oldScrollX, int oldScrollY) {
-                //check condition
-                if (scrollY == v.getChildAt(0).getMeasuredHeight() - v.getMeasuredHeight()) {
-                    // when reach last item position
-                    // increase page size
-                    page += 10;
-
-                    progressBar.setVisibility(View.VISIBLE);
-                    pokemonViewModel.getPokemons(page, limit);
-                    pokemonViewModel.setPage(page);
-                    Log.d(TAG, "TAG onScrollChange: inside Scroll"+" Page num"+pokemonViewModel.getPage());
-
-                }
-                if(scrollY > oldScrollY && protect){
-                    MainActivity.getNavigationView().animate().translationY(MainActivity.getNavigationView().getHeight());
-                    protect = false;
-                }if(scrollY < oldScrollY && !protect){
-                    MainActivity.getNavigationView().animate().translationY(0);
-                    protect = true;
-                }
-//                Log.d(TAG, "TAG onScrollChange: Y"+scrollY);
-//                Log.d(TAG, "TAG onScrollChange: X"+scrollX);
-//                if(scrollY !=0)
-//                    pokemonViewModel.setScrollY(scrollY);
-            }
-        });
      }
 
     private void setupSwipe() {
@@ -202,6 +143,72 @@ public class PokemonFragment extends Fragment {
     }
 
     @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        // Start shimmer
+        //shimmerFrameLayout.startShimmer();
+        Log.d(TAG, "TAG onActivityCreated: ");
+
+        pokemonViewModel = new ViewModelProvider(getActivity()).get(PokemonViewModel.class);
+        pokemonAdapter = new PokemonAdapter(getActivity());
+
+        page = pokemonViewModel.getPage();
+        Log.d(TAG, "TAG onActivityCreated: Page Start Num "+page);
+        GridLayoutManager gridLayoutManager = new GridLayoutManager(getActivity(),
+                2, GridLayoutManager.VERTICAL, false);
+        recyclerView.setLayoutManager(gridLayoutManager);
+        recyclerView.setAdapter(pokemonAdapter);
+//        if(page >0){
+//            pokemonViewModel.getPokemons(0, page);
+//            Log.d(TAG, "inside new Call with page = "+page);
+//        }
+
+
+        pokemonViewModel.getPokemons(page, limit);
+
+
+        if(page ==0){
+            page+=10;
+            pokemonViewModel.setPage(page);
+        }
+
+
+        setupSwipe();
+
+        // hit the api with every 10 pokemons are displayed
+        scrollViewPokemon.setOnScrollChangeListener(new NestedScrollView.OnScrollChangeListener() {
+            boolean protect = true;
+            @Override
+            public void onScrollChange(NestedScrollView v, int scrollX, int scrollY, int oldScrollX, int oldScrollY) {
+                //check condition
+                if (scrollY == v.getChildAt(0).getMeasuredHeight() - v.getMeasuredHeight()) {
+                    // when reach last item position
+                    // increase page size
+                    page += 10;
+
+                    progressBar.setVisibility(View.VISIBLE);
+                    pokemonViewModel.getPokemons(page, limit);
+                    pokemonViewModel.setPage(page);
+                    Log.d(TAG, "TAG onScrollChange: inside Scroll"+" Page num"+pokemonViewModel.getPage());
+
+                }
+                if(scrollY > oldScrollY && protect){
+                    MainActivity.getNavigationView().animate().translationY(MainActivity.getNavigationView().getHeight());
+                    protect = false;
+                }if(scrollY < oldScrollY && !protect){
+                    MainActivity.getNavigationView().animate().translationY(0);
+                    protect = true;
+                }
+//                Log.d(TAG, "TAG onScrollChange: Y"+scrollY);
+//                Log.d(TAG, "TAG onScrollChange: X"+scrollX);
+//                if(scrollY !=0)
+//                    pokemonViewModel.setScrollY(scrollY);
+            }
+        });
+        pokemonViewModel.getPokemonList().observe(getActivity(),observer);
+    }
+
+    @Override
     public void onStart() {
         super.onStart();
         Log.d(TAG, "TAG onStart: ");
@@ -212,6 +219,7 @@ public class PokemonFragment extends Fragment {
     public void onDestroy() {
         super.onDestroy();
         Log.d(TAG, "onDestroy: ");
+        pokemonViewModel.getPokemonList().removeObserver(observer);
     }
 
     @Override

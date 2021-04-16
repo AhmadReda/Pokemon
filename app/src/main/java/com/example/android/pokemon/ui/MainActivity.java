@@ -40,7 +40,7 @@ import dagger.hilt.android.AndroidEntryPoint;
 @AndroidEntryPoint
 public class MainActivity extends AppCompatActivity {
 
-    private MutableLiveData<Boolean> networkLiveData;
+     MutableLiveData<Boolean> networkLiveData;
     // Splash Screen Members
     private Handler handler;
     private ImageView ivSplash;

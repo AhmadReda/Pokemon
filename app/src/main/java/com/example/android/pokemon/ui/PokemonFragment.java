@@ -134,6 +134,16 @@ public class PokemonFragment extends Fragment {
         super.onResume();
         Log.d(TAG, "TAG onResume: ");
 //        scrollViewPokemon.smoothScrollTo(0,pokemonViewModel.getScrollY());
+        ((MainActivity) getActivity()).networkLiveData.observe(getViewLifecycleOwner() , new Observer<Boolean>() {
+            @Override
+            public void onChanged(Boolean aBoolean) {
+                if(aBoolean){
+                 pokemonViewModel.getPokemons(0 ,10);
+                }else if(!aBoolean ){
+                    pokemonViewModel.getPokemons(page ,limit);
+                }
+            }
+        });
     }
 
     @Override

@@ -40,7 +40,7 @@ import dagger.hilt.android.AndroidEntryPoint;
 @AndroidEntryPoint
 public class MainActivity extends AppCompatActivity {
 
-     MutableLiveData<Boolean> networkLiveData;
+    MutableLiveData<Boolean> networkLiveData;
     // Splash Screen Members
     private Handler handler;
     private ImageView ivSplash;
@@ -65,6 +65,8 @@ public class MainActivity extends AppCompatActivity {
     private ConstraintLayout rootLayout;
     private static BottomNavigationView navigationView;
     private FloatingActionButton favUp;
+
+    private static final String TAG = "MainActivity";
 
 
     @Override
@@ -129,7 +131,6 @@ public class MainActivity extends AppCompatActivity {
                 if(aBoolean && mainOffline){
                     vInternet.setVisibility(View.GONE);
                     fragment.setVisibility(View.VISIBLE);
-                    //NavigationUI.setupWithNavController(navigationView,navController);
                     mainOffline = false;
                     Snackbar.make( rootLayout,"You are online !", Snackbar.LENGTH_LONG)
                             .setAction("Close", new View.OnClickListener() {
@@ -271,4 +272,12 @@ public class MainActivity extends AppCompatActivity {
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
         fragmentTransaction.setCustomAnimations(R.anim.fragment_fade_enter,R.anim.fragment_fade_exit,R.anim.fragment_fade_enter,R.anim.fragment_fade_exit);
     }
+    public boolean isMainOffline() {
+        return mainOffline;
+    }
+
+    public void setMainOffline(boolean mainOffline) {
+        this.mainOffline = mainOffline;
+    }
+
 }
